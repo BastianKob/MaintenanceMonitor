@@ -3,18 +3,21 @@ package com.technikum.MaintenanceMonitor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
 public class MaintenanceMonitorApplication {
-
+	String message = "-";
 	public static void main(String[] args) {
 		SpringApplication.run(MaintenanceMonitorApplication.class, args);
 	}
 
 	@GetMapping("/")
 	public String monitor(){
+		//taken from https://moodle.technikum-wien.at/mod/resource/view.php?id=1027819
 		return "\n" +
 				"<!doctype html>\n" +
 				"<html lang=\"en\">\n" +
@@ -100,7 +103,19 @@ public class MaintenanceMonitorApplication {
 
 	@GetMapping("/api/maintenanceMode")
 	public String maintenanceMode(){
-		return "-";
+		return message;
+	}
+
+	@GetMapping("/api/maintenanceMode/reset")
+	public int reset(){
+		message = "-";
+		return 1;
+	}
+
+	@GetMapping("/api/maintenanceMode/set")
+	public int set(@RequestParam(name = "message") String message){
+		this.message = message;
+		return 1;
 	}
 
 
